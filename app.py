@@ -1,6 +1,6 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from config import Config
+from db import db
 
 # Inicializando o aplicativo Flask
 app = Flask(__name__)
@@ -9,10 +9,10 @@ app = Flask(__name__)
 app.config.from_object(Config)
 
 # Inicializando o objeto do Banco de Dados
-db = SQLAlchemy(app)
+db.init_app(app)
 
 # Importando as rotas
-# from routes import *   # Este arquivo será criado depois.
+# from models import User, Project, Subitem
 
 @app.route('/')
 def index():
