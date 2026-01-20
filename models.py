@@ -1,5 +1,4 @@
 from db import db
-from datetime import datetime
 
 #Tabela de usuários
 class User(db.Model):
@@ -12,11 +11,11 @@ class User(db.Model):
     data_nascimento = db.Column(db.Date, nullable=False)
     aceite = db.Column(db.Boolean, default=False)
 
-    # Relacionamentos que auxiliam nas buscas
+    # Relacionamentos
     # 'projetos_criados' acessa os objetos que um usuário é dono
-    projetos_criados = db.relationship('Project', backref='dono', lazy=True)
+    projetos_criados = db.relationship('Project', backref='dono', lazy=True, cascade="all, delete-orphan")
     # 'tarefas_atribuidas' acessa os subitens em que um  usuário é responsável
-    tarefas_atribuidas = db.relationship('Subitem', backref='responsavel', lazy=True)
+    tarefas_atribuidas = db.relationship('Subitem', backref='responsavel', lazy=True, cascade="all, delete-orphan") 
 
 class Project(db.Model):
     __tablename__ = 'projects'

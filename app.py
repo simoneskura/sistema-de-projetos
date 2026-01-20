@@ -5,24 +5,19 @@ from db import db
 # Inicializando o aplicativo Flask
 app = Flask(__name__)
 
-# Carregando o arquivo config.py
+# Carregando as configurações
 app.config.from_object(Config)
 
-# Inicializando o objeto do Banco de Dados
+# Inicializando o Banco de Dados
 db.init_app(app)
 
-# Importando as rotas
-# from models import User, Project, Subitem
-
-@app.route('/')
-def index():
-    return "O servidor está rodando e o banco de dados está configurado!"
+# Importando as rotas e criando as tabelas
+with app.app_context():
+    # Importando todas as rotas do arquivo routes.py
+    from routes import *
+    # Cria o arquivo app.db com as tabelas se ele ainda não existir
+    db.create_all()
 
 if __name__ == '__main__':
-    # Cria o banco de dados se não existir
-    with app.app_context():
-        db.create_all()
-
-    # Roda o servidor
+    # Roda o servidor em modo de desenvolvimento
     app.run(debug=True)
-    
