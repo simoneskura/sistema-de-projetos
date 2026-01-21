@@ -12,10 +12,11 @@ class User(db.Model):
     aceite = db.Column(db.Boolean, default=False)
 
     # Relacionamentos
-    # 'projetos_criados' acessa os objetos que um usuário é dono
+    # Se deletar o usuário, deletamos os projetos que ele é DONO (Correto)
     projetos_criados = db.relationship('Project', backref='dono', lazy=True, cascade="all, delete-orphan")
-    # 'tarefas_atribuidas' acessa os subitens em que um  usuário é responsável
-    tarefas_atribuidas = db.relationship('Subitem', backref='responsavel', lazy=True, cascade="all, delete-orphan") 
+    
+    # Se deletar o usuário, NÃO deletamos as tarefas automaticamente para não quebrar projetos de outros donos
+    tarefas_atribuidas = db.relationship('Subitem', backref='responsavel', lazy=True) 
 
 class Project(db.Model):
     __tablename__ = 'projects'
@@ -25,10 +26,10 @@ class Project(db.Model):
     data_inicio = db.Column(db.Date, nullable=False)
     data_fim = db.Column(db.Date, nullable=False)
 
-# Chave estrangeira que relaciona  o Dono do Projeto ao usuário
+    # Chave estrangeira que relaciona o Dono do Projeto ao usuário
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    # Relacionamento com Subitens, se um projeto é excluído, as tarefas também serão.
+    # Relacionamento com Subitens, se um projeto é excluído, as tarefas também serão (Perfeito!)
     subitens = db.relationship('Subitem', backref='projeto', lazy=True, cascade="all, delete-orphan")
 
 class Subitem(db.Model):
@@ -36,12 +37,12 @@ class Subitem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     titulo = db.Column(db.String(100), nullable=False)
     descricao = db.Column(db.Text, nullable=False)
-    status = db.Column(db.String(20), default='Pendente') # Pendente, Em andamento, Concluído
+    status = db.Column(db.String(20), default='pendente') # Mantendo minúsculo como no seu Form
     prazo = db.Column(db.Date, nullable=True)
 
     # chaves estrangeiras
     # Identifica a qual projeto uma tarefa pertence
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
 
-    # Usuário que é  responsávelpor uma tarefa 
+    # Usuário que é responsável por uma tarefa 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
