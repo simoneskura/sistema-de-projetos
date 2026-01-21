@@ -15,7 +15,7 @@ class Config:
     # Garante que os formulários tenham proteção  CSRF
     WTF_CSRF_ENABLED = True
 
-#Limita a quantidade de itens por página
+    # Limita a quantidade de itens por página
     ITEMS_PER_PAGE = 10
     
     # Define onde o arquivo do banco de dados SQLite será criado

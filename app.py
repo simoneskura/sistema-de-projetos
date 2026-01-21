@@ -13,8 +13,10 @@ db.init_app(app)
 
 # Importando as rotas e criando as tabelas
 with app.app_context():
+    
     # Importando todas as rotas do arquivo routes.py
     from routes import *
+
     # Cria o arquivo app.db com as tabelas se ele ainda não existir
     db.create_all()
 
