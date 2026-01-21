@@ -1,0 +1,103 @@
+{% extends "menu.html" %}
+
+{% block title %}Resumo de {{ usuario.nome }} - Gerenciador{% endblock %}
+
+{% block content %}
+    <section>
+        <header>
+            <h1>Resumo do Usuário</h1>
+            <p>Informações detalhadas cadastradas no sistema.</p>
+        </header>
+
+        <article>
+            <h2>Dados Pessoais</h2>
+            <dl>
+                <dt><strong>Nome:</strong></dt>
+                <dd>{{ usuario.nome }}</dd>
+
+                <dt><strong>E-mail:</strong></dt>
+                <dd>{{ usuario.email }}</dd>
+
+                <dt><strong>CPF:</strong></dt>
+                <dd>{{ usuario.cpf }}</dd>
+
+                <dt><strong>Telefone:</strong></dt>
+                <dd>{{ usuario.telefone }}</dd>
+
+                <dt><strong>Data de Nascimento:</strong></dt>
+                <dd>{{ usuario.data_nascimento.strftime('%d/%m/%Y') }}</dd>
+            </dl>
+        </article>
+
+        <hr aria-hidden="true">
+
+        <article>
+            <h2 id="tit-projetos-dono">Projetos que sou Dono</h2>
+            {% if usuario.projetos_criados %}
+                <table aria-labelledby="tit-projetos-dono">
+                    <thead>
+                        <tr>
+                            <th scope="col">Projeto</th>
+                            <th scope="col">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for projeto in usuario.projetos_criados %}
+                        <tr>
+                            <td>{{ projeto.nome }}</td>
+                            <td>
+                                <a href="{{ url_for('detalhe_projeto', id=projeto.id) }}" aria-label="Ver detalhes do projeto {{ projeto.nome }}">
+                                    Acessar Projeto
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Este usuário ainda não possui projetos vinculados como dono.</p>
+            {% endif %}
+        </article>
+
+        <hr aria-hidden="true">
+
+        <article>
+            <h2 id="tit-tarefas-resp">Tarefas sob minha responsabilidade</h2>
+            {% if usuario.tarefas_atribuidas %}
+                <table aria-labelledby="tit-tarefas-resp">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tarefa</th>
+                            <th scope="col">Projeto</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tarefa in usuario.tarefas_atribuidas %}
+                        <tr>
+                            <td>{{ tarefa.titulo }}</td>
+                            <td>{{ tarefa.projeto.nome }}</td>
+                            <td>{{ tarefa.status }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Este usuário não é responsável por nenhuma tarefa no momento.</p>
+            {% endif %}
+        </article>
+
+        <hr aria-hidden="true">
+
+        <nav aria-label="Ações do usuário">
+            <form action="{{ url_for('deletar_usuario', id=usuario.id) }}" method="POST">
+                <button type="submit" onclick="return confirm('Tem certeza que deseja remover este usuário? Esta ação não pode ser desfeita.')">
+                    Excluir este Usuário
+                </button>
+            </form>
+            
+            <br>
+            <p><a href="{{ url_for('listar_usuarios') }}">Voltar para a lista de usuários</a></p>
+        </nav>
+    </section>
+{% endblock %}

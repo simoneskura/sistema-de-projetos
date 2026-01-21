@@ -1,0 +1,21 @@
+{% extends "menu.html" %}
+
+{% block title %}Início - Sistema de Gestão{% endblock %}
+
+{% block content %}
+    <section>
+        <header>
+            <h1>Painel de Controle</h1>
+            <p>Seja bem-vindo ao sistema de gerenciamento de projetos.</p>
+        </header>
+
+        <nav aria-label="Acesso Rápido">
+            <h2>Ações Rápidas</h2>
+            <ul>
+                <li><a href="{{ url_for('novo_usuario') }}">Cadastrar usuário</a></li>
+                <li><a href="{{ url_for('novo_projeto') }}">Criar projeto</a></li>
+                <li><a href="{{ url_for('listar_usuarios') }}">Listar usuários</a></li>
+            </ul>
+        </nav>
+    </section>
+{% endblock %}

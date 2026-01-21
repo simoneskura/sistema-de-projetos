@@ -1,0 +1,70 @@
+{% extends "menu.html" %}
+
+{% block title %}Criar Projeto - Gerenciador{% endblock %}
+
+{% block content %}
+    <section>
+        <header>
+            <h1>Criar Novo Projeto</h1>
+            <p>Preencha os dados do projeto e selecione o dono do projeto.</p>
+        </header>
+
+        <form action="{{ url_for('novo_projeto') }}" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div>
+                {{ form.nome.label }} <br>
+                {{ form.nome() }}
+                {% for error in form.nome.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.descricao.label }} <br>
+                {{ form.descricao(rows=4, cols=40) }}
+                {% for error in form.descricao.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.data_inicio.label }} <br>
+                {{ form.data_inicio(type="date") }}
+                {% for error in form.data_inicio.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.data_fim.label }} <br>
+                {{ form.data_fim(type="date") }}
+                {% for error in form.data_fim.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.dono.label }} <br>
+                {{ form.dono() }}
+                {% for error in form.dono.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.submit() }}
+            </div>
+        </form>
+    </section>
+{% endblock %}

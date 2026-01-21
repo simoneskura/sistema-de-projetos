@@ -1,0 +1,129 @@
+{% extends "menu.html" %}
+
+{% block title %}Projeto: {{ projeto.nome }}{% endblock %}
+
+{% block content %}
+    <section>
+        <header>
+            <h1>{{ projeto.nome }}</h1>
+            <p><strong>Dono do Projeto:</strong> {{ projeto.dono.nome }}</p>
+            
+            <form action="{{ url_for('deletar_projeto', id=projeto.id) }}" method="POST">
+                <button type="submit" onclick="return confirm('Deseja realmente excluir este projeto e todas as suas tarefas?')">
+                    Excluir Projeto
+                </button>
+            </form>
+        </header>
+
+        <article>
+            <h2>Sobre o Projeto</h2>
+            <p>{{ projeto.descricao }}</p>
+            <p><strong>Prazo Final:</strong> {{ projeto.data_fim.strftime('%d/%m/%Y') }}</p>
+        </article>
+
+        <hr aria-hidden="true">
+
+        <article>
+            <h2>Participantes</h2>
+            {% if participantes %}
+                <ul>
+                {% for p in participantes %}
+                    <li>{{ p.nome }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p>não há participantes até o momento .</p>
+            {% endif %}
+        </article>
+
+        <hr aria-hidden="true">
+
+        <section>
+            <h2 id="titulo-tarefas">Tarefas do projeto</h2>
+            {% if projeto.subitens %}
+                <table aria-labelledby="titulo-tarefas">
+                    <thead>
+                        <tr>
+                            <th scope="col">Tarefa</th>
+                            <th scope="col">Responsável</th>
+                            <th scope="col">Prazo</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in projeto.subitens %}
+                        <tr>
+                            <td>{{ item.titulo }}</td>
+                            <td>{{ item.responsavel.nome }}</td>
+                            <td>{{ item.prazo.strftime('%d/%m/%Y') if item.prazo else 'Sem prazo' }}</td>                                
+                            <td>{{ item.status }}</td>
+                            <td>
+                                <form action="{{ url_for('deletar_tarefa', id=item.id) }}" method="POST">
+                                    <button type="submit" onclick="return confirm('Excluir esta tarefa?')" aria-label="Excluir tarefa: {{ item.titulo }}">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Nenhuma tarefa cadastrada.</p>
+            {% endif %}
+        </section>
+
+        <hr aria-hidden="true">
+
+        <section>
+            <h2>Adicionar Nova Tarefa</h2>
+            <form action="{{ url_for('detalhe_projeto', id=projeto.id) }}" method="POST" novalidate>
+                {{ form.hidden_tag() }}
+                
+                <div>
+                    {{ form.titulo.label(label="Nome da Tarefa") }} <br>
+                    {{ form.titulo() }}
+                    {% for error in form.titulo.errors %}
+                        <span class="erro-mensagem">{{ error }}</span>
+                    {% endfor %}
+                </div> 
+               
+                <div>
+                    {{ form.descricao.label }} <br>
+                    {{ form.descricao(rows=3) }}
+                    {% for error in form.descricao.errors %}
+                        <span class="erro-mensagem">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    {{ form.responsavel.label }} <br>
+                    {{ form.responsavel() }}
+                    {% for error in form.responsavel.errors %}
+                        <span class="erro-mensagem">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    {{ form.prazo.label }} <br>
+                    {{ form.prazo(type="date") }}
+                    {% for error in form.prazo.errors %}
+                        <span class="erro-mensagem">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div>
+                    {{ form.status.label }} <br>
+                    {{ form.status() }}
+                    {% for error in form.status.errors %}
+                        <span class="erro-mensagem">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <br>
+                {{ form.submit() }}
+            </form>
+        </section>
+    </section>
+{% endblock %}

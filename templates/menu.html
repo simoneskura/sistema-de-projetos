@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Gerenciador de Projetos{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+</head>
+<body>
+
+    <header>
+        <nav aria-label="Menu Principal">
+            <ul id="menu-lista">
+                <li><a href="{{ url_for('index') }}">Início</a></li>
+                <li><a href="{{ url_for('listar_usuarios') }}">Lista de Usuários</a></li>
+                <li><a href="{{ url_for('novo_usuario') }}">Cadastrar Usuário</a></li>
+                <li><a href="{{ url_for('novo_projeto') }}">Criar Projeto</a></li>
+            </ul>
+        </nav>
+        <hr>
+    </header>
+
+    <section aria-label="Notificações do Sistema">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for message in messages %}
+                <li role="alert"><strong>Aviso:</strong> {{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        {% endwith %}
+    </section>
+
+    <main id="conteudo-principal" role="main">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>Sistema de Gestão de Projetos</p>
+    </footer>
+
+</body>
+</html>

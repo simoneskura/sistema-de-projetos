@@ -1,0 +1,79 @@
+{% extends "menu.html" %}
+
+{% block title %}Cadastrar Usuário - Gerenciador{% endblock %}
+
+{% block content %}
+    <section>
+        <header>
+            <h1>Cadastrar Novo Usuário</h1>
+            <p>Preencha os campos abaixo.</p>
+        </header>
+
+        <form action="{{ url_for('novo_usuario') }}" method="POST" novalidate>
+            {{ form.hidden_tag() }}
+
+            <div>
+                {{ form.nome.label }} <br>
+                {{ form.nome() }}
+                {% for error in form.nome.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.cpf.label }} <br>
+                {{ form.cpf(placeholder="000.000.000-00") }}
+                {% for error in form.cpf.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.email.label }} <br>
+                {{ form.email() }}
+                {% for error in form.email.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.telefone.label }} <br>
+                {{ form.telefone() }}
+                {% for error in form.telefone.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.data_nascimento.label }} <br>
+                {{ form.data_nascimento(type="date") }}
+                {% for error in form.data_nascimento.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.aceite() }} {{ form.aceite.label }}
+                {% for error in form.aceite.errors %}
+                    <span class="erro-mensagem" role="alert">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <br>
+
+            <div>
+                {{ form.submit() }}
+            </div>
+        </form>
+    </section>
+{% endblock %}

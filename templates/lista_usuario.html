@@ -1,0 +1,47 @@
+{% extends "menu.html" %}
+
+{% block title %}Lista de Usuários - Gerenciador{% endblock %}
+
+{% block content %}
+    <section>
+        <header>
+            <h1 id="titulo-lista">Usuários Cadastrados</h1>
+        </header>
+
+        {% if usuarios %}
+            <table aria-labelledby="titulo-lista">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome Completo</th>
+                        <th scope="col">E-mail de Contato</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.nome }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>
+                            <div class="acoes-tabela">
+                                <a href="{{ url_for('resumo_usuario', id=usuario.id) }}" aria-label="Ver resumo detalhado de {{ usuario.nome }}">
+                                    Ver Resumo
+                                </a>
+
+                                <form action="{{ url_for('deletar_usuario', id=usuario.id) }}" method="POST" style="display:inline;">
+                                    <button type="submit" onclick="return confirm('Tem certeza que deseja remover o usuário {{ usuario.nome }}? Isso apagará todas as suas tarefas.')" aria-label="Excluir usuário {{ usuario.nome }}">
+                                        Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Ainda não existem usuários cadastrados no banco de dados.</p>
+            <p><a href="{{ url_for('novo_usuario') }}">Clique aqui para realizar o primeiro cadastro.</a></p>
+        {% endif %}
+    </section>
+{% endblock %}
